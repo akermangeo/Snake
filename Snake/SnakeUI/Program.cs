@@ -17,7 +17,7 @@ namespace SnakeUI
             SnakeUiController controller = new SnakeUiController(mainForm);
             SnakeGame snakeGame = new SnakeGame();
             SnakeGameAsyncService snakeGameAsyncService = new SnakeGameAsyncService(snakeGame);
-            snakeGame.GamePositionUpdated += controller.GamePositionUpdatedhandler;
+            snakeGameAsyncService.GamePositionUpdated += controller.GamePositionUpdatedhandler;
             Task runGameTask = snakeGameAsyncService.RunGameAsync();
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
