@@ -1,4 +1,5 @@
-﻿using SnakeGameLib.ModelObjects;
+﻿using System.Drawing;
+using SnakeGameLib.ModelObjects;
 
 namespace SnakeGameLib;
 
@@ -21,15 +22,22 @@ public class GamePosition
         return new GameModel(_position);
     }
 
-    private SquareStatus[,] _position;
+    private readonly SquareStatus[,] _position;
 
-    public void Fill(int randomX, int randomY)
+    public void Fill(Point point)
     {
-        _position[randomX, randomY] = SquareStatus.Filled;
+        _position[point.X, point.Y] = SquareStatus.Filled;
     }
 
-    public void Unfill(int randomX, int randomY)
+    public void Unfill(Point point)
     {
-        _position[randomX, randomY] = SquareStatus.Unfilled;
+        _position[point.X, point.Y] = SquareStatus.Unfilled;
+    }
+
+    public Point GetLeftPoint(Point currentPoint)
+    {
+        
+        int newX = (currentPoint.X + 99) % 100;
+        return currentPoint with { X = newX };
     }
 }

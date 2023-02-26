@@ -13,11 +13,12 @@ namespace SnakeUI
         static void Main()
         {
             ApplicationConfiguration.Initialize();
-            var mainForm = new Form1();
-            SnakeUiController controller = new SnakeUiController(mainForm);
+            var mainForm = new Form1(); 
+            
             SnakeGame snakeGame = new SnakeGame();
             SnakeGameAsyncService snakeGameAsyncService = new SnakeGameAsyncService(snakeGame);
-            snakeGameAsyncService.GamePositionUpdated += controller.GamePositionUpdatedhandler;
+
+            SnakeUiController controller = new SnakeUiController(mainForm, snakeGameAsyncService);
             Task runGameTask = snakeGameAsyncService.RunGameAsync();
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
@@ -29,10 +30,23 @@ namespace SnakeUI
     internal class SnakeUiController
     {
         private readonly Form1 _mainForm;
+        private readonly SnakeGameAsyncService _snakeGameAsyncService;
 
-        public SnakeUiController(Form1 mainForm)
+        public SnakeUiController(Form1 mainForm, SnakeGameAsyncService snakeGameAsyncService)
         {
+            _snakeGameAsyncService = snakeGameAsyncService;
+            _snakeGameAsyncService.GamePositionUpdated += GamePositionUpdatedhandler;
             _mainForm = mainForm;
+            _mainForm.KeyDown += KeyPressed;
+        }
+
+        private void KeyPressed(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                _snakeGameAsyncService.TogglePause();
+            }
+
         }
 
         public void GamePositionUpdatedhandler(object? sender, GameModel eventArgs)
@@ -54,12 +68,6 @@ namespace SnakeUI
             }
 
             _mainForm.DisplayGame(bmp);
-            //using (Graphics graph = Graphics.FromImage(bmp))
-            //{
-            //    Rectangle ImageSize = new Rectangle(0, 0, x, y);
-            //    graph.FillRectangle(Brushes.White, ImageSize);
-            //}
-            //return bmp;
         }
     }
 }

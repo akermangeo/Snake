@@ -27,5 +27,10 @@ namespace SnakeGameLib
         {
             GamePositionUpdated?.Invoke(this, e);
         }
+
+        public void TogglePause()
+        {
+            _snakeGame.TogglePause();
+        }
     }
 }
