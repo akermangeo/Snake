@@ -7,6 +7,6 @@
             _position = position;
         }
 
-        private SquareStatus[,] _position;
+        public SquareStatus[,] _position { get; }
     }
 }

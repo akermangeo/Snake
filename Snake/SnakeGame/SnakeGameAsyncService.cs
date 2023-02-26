@@ -18,9 +18,9 @@ namespace SnakeGameLib
             snakeGame.GamePositionUpdated += GamePositionUpdatedhandler;
         }
 
-        public async Task RunGameAsync()
+        public Task RunGameAsync()
         {
-            await Task.Run(() => _snakeGame.RunGame());
+            return Task.Run(() => _snakeGame.RunGame());
         }
 
         private void GamePositionUpdatedhandler(object? sender, GameModel e)
