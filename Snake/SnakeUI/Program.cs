@@ -1,6 +1,7 @@
 using System.Security.Cryptography.X509Certificates;
 using SnakeGameLib;
 using SnakeGameLib.ModelObjects;
+using SnakeUI.Forms;
 
 namespace SnakeUI
 {
@@ -47,8 +48,35 @@ namespace SnakeUI
                 _snakeGameAsyncService.TogglePause();
             }
 
-        }
+            if (e.KeyCode == Keys.Left)
+            {
+                _snakeGameAsyncService.GoLeft();
+            }
 
+            if (e.KeyCode == Keys.Right)
+            {
+                _snakeGameAsyncService.GoRight();
+            }
+
+            if (e.KeyCode == Keys.Up)
+            {
+                _snakeGameAsyncService.GoUp();
+            }
+
+            if (e.KeyCode == Keys.Down)
+            {
+                _snakeGameAsyncService.GoDown();
+            }
+
+
+
+
+
+
+
+
+        }
+        
         public void GamePositionUpdatedhandler(object? sender, GameModel eventArgs)
         {
             Bitmap bmp = new Bitmap(100, 100);

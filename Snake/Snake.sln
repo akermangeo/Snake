@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnakeUI", "SnakeUI\SnakeUI.csproj", "{AF9907ED-CAE4-4986-9065-1D6E6DB6EBCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnakeUI", "SnakeUI\SnakeUI.csproj", "{AF9907ED-CAE4-4986-9065-1D6E6DB6EBCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnakeGameLib", "SnakeGame\SnakeGameLib.csproj", "{2C524A02-F978-409A-8595-54A462875995}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnakeGameLib", "SnakeGame\SnakeGameLib.csproj", "{2C524A02-F978-409A-8595-54A462875995}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -36,8 +36,39 @@ public class GamePosition
 
     public Point GetLeftPoint(Point currentPoint)
     {
-        
         int newX = (currentPoint.X + 99) % 100;
         return currentPoint with { X = newX };
+    }
+
+    public Point GetDownPoint(Point currentPoint)
+    {
+        int X = currentPoint.X;
+        int Y = currentPoint.Y;
+        Y = Y + 1;
+        if (Y == 100)
+        {
+            Y = 0;
+        }
+        Point newpoint = new Point(X, Y);
+        return newpoint;
+    }
+
+    public Point GetRightPoint(Point currentPoint)
+    {
+        int newX = (currentPoint.X + 1) % 100;
+        return currentPoint with { X = newX };
+    }
+
+    public Point GetUpPoint(Point currentPoint)
+    {
+        int X = currentPoint.X;
+        int Y = currentPoint.Y;
+        Y = Y - 1;
+        if (Y == -1)
+        {
+            Y = 99;
+        }
+        Point newpoint = new Point(X, Y);
+        return newpoint;
     }
 }
