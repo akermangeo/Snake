@@ -10,12 +10,19 @@ namespace SnakeGameLib
     public class SnakeGameAsyncService
     {
         public event EventHandler<GameModel> GamePositionUpdated;
+        public event EventHandler FailureDetected;
         private SnakeGame _snakeGame;
 
         public SnakeGameAsyncService(SnakeGame snakeGame)
         {
             _snakeGame = snakeGame;
             snakeGame.GamePositionUpdated += GamePositionUpdatedhandler;
+            snakeGame.FailureDetected += FailureDetectedHandler;
+        }
+
+        private void FailureDetectedHandler(object? sender, EventArgs e)
+        {
+            FailureDetected?.Invoke(this, EventArgs.Empty);
         }
 
         public Task RunGameAsync()

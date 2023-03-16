@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using System.Xml.Linq;
+using Microsoft.VisualBasic;
 using SnakeGameLib.ModelObjects;
 
 namespace SnakeGameLib
@@ -6,46 +8,102 @@ namespace SnakeGameLib
     public class SnakeGame
     {
         public event EventHandler<GameModel>? GamePositionUpdated;
+        public event EventHandler? FailureDetected;
         private volatile bool _paused = false;
         private volatile string _direction = "Right";
+        private Random _random = new Random();
 
         public void RunGame()
         {
-            Random random = new Random();
+            List<Point> food = new List<Point>();
             GamePosition position = new GamePosition();
-            int randomX = random.Next(100);
-            int randomY = random.Next(100);
-            Point currentPoint = new Point(randomX, randomY);
+            List<Point> snake = new List<Point>();
+            Point snakePoint1 = GenerateRandomPointNoDuplicates(new List<Point>());
+            Point snakePoint2 = position.GetLeftPoint(snakePoint1);
+            Point snakePoint3 = position.GetLeftPoint(snakePoint2);
+
+            snake.Add(snakePoint3);
+            snake.Add(snakePoint2);
+            snake.Add(snakePoint1);
+
+            Point foodPoint = GenerateRandomPointNoDuplicates(snake);
+            food.Add(foodPoint);
+
+            position.Fill(foodPoint);
+
+            position.Fill(snakePoint1);
+            position.Fill(snakePoint2);
+            position.Fill(snakePoint3);
+
             while (true)
             {
                 if (!_paused)
                 {
-                    position.Fill(currentPoint);
                     GamePositionUpdated?.Invoke(this, position.GetGameModel());
-                    Thread.Sleep(1000);
-                    position.Unfill(currentPoint);
+                    Thread.Sleep(100);
+
+                    Point lastPoint = snake.First();
+                    if (food.Contains(lastPoint))
+                    {
+                        food.Remove(lastPoint);
+                    }
+                    else
+                    {
+                        snake.RemoveAt(0);
+                        position.Unfill(lastPoint);
+                    }
+
+                    Point firstPoint = snake.Last();
+
+                    Point point_to_fill = default;
+                    
                     if (_direction == "Left")
                     {
-                        currentPoint = position.GetLeftPoint(currentPoint);
+                        point_to_fill = position.GetLeftPoint(firstPoint);
                     }
 
                     if (_direction == "Right")
                     {
-                        currentPoint = position.GetRightPoint(currentPoint);
+                        point_to_fill = position.GetRightPoint(firstPoint);
                     }
 
                     if (_direction == "Down")
                     {
-                        currentPoint = position.GetDownPoint(currentPoint);
+                        point_to_fill = position.GetDownPoint(firstPoint);
                     }
 
                     if (_direction == "Up")
                     {
-                        currentPoint = position.GetUpPoint(currentPoint);
+                        point_to_fill = position.GetUpPoint(firstPoint);
                     }
+                    if (snake.Contains(point_to_fill))
+                    {
+                        FailureDetected?.Invoke(this, EventArgs.Empty);
+                    }
+                    if (food.Contains(point_to_fill))
+                    {
+                        Point newFood = GenerateRandomPointNoDuplicates(snake);
+                        food.Add(newFood);
+                        position.Fill(newFood);
+                    }
+
+                    position.Fill(point_to_fill);
+                    snake.Add(point_to_fill);
 
                 }
             }
+        }
+
+        private Point GenerateRandomPointNoDuplicates(List<Point> duplicates)
+        {
+            int randomX = _random.Next(100);
+            int randomY = _random.Next(100);
+            Point point = new Point(randomX, randomY);
+            if (duplicates.Contains(point))
+            {
+                return GenerateRandomPointNoDuplicates(duplicates);
+            }
+            return point;
         }
 
         public void TogglePause()

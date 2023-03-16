@@ -37,8 +37,14 @@ namespace SnakeUI
         {
             _snakeGameAsyncService = snakeGameAsyncService;
             _snakeGameAsyncService.GamePositionUpdated += GamePositionUpdatedhandler;
+            _snakeGameAsyncService.FailureDetected += FailureDetectedHandler;
             _mainForm = mainForm;
             _mainForm.KeyDown += KeyPressed;
+        }
+
+        private void FailureDetectedHandler(object? sender, EventArgs e)
+        {
+            MessageBox.Show("You lose");
         }
 
         private void KeyPressed(object? sender, KeyEventArgs e)
