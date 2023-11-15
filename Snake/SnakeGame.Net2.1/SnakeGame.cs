@@ -1,9 +1,11 @@
-﻿using System.Drawing;
-using System.Xml.Linq;
-using Microsoft.VisualBasic;
-using SnakeGameLib.ModelObjects;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Threading;
+using SnakeGame.Net2._1.ModelObjects;
 
-namespace SnakeGameLib
+namespace SnakeGame.Net2._1
 {
     public class SnakeGame
     {
