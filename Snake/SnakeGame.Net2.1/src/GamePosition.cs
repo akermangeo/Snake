@@ -12,7 +12,7 @@ public class GamePosition
         {
             for (int y = 0; y < 100; ++y)
             {
-                _position[x, y] = SquareStatus.Unfilled;
+                _position[x, y] = SquareStatus.Empty;
             }
         }
     }
@@ -23,16 +23,6 @@ public class GamePosition
     }
 
     private readonly SquareStatus[,] _position;
-
-    public void Fill(Point point)
-    {
-        _position[point.X, point.Y] = SquareStatus.Filled;
-    }
-
-    public void Unfill(Point point)
-    {
-        _position[point.X, point.Y] = SquareStatus.Unfilled;
-    }
 
     public Point GetLeftPoint(Point currentPoint)
     {
@@ -70,5 +60,26 @@ public class GamePosition
         }
         Point newpoint = new Point(X, Y);
         return newpoint;
+    }
+
+    public void Food(Point point)
+    {
+
+        _position[point.X, point.Y] = SquareStatus.Food;
+    }
+
+    public void Head(Point point)
+    {
+        _position[point.X, point.Y] = SquareStatus.Head;
+    }
+
+    public void Body(Point point)
+    {
+        _position[point.X, point.Y] = SquareStatus.Body;
+    }
+
+    public void Empty(Point point)
+    {
+        _position[point.X, point.Y] = SquareStatus.Empty;
     }
 }

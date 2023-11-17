@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using SnakeGame.Net2._1.ModelObjects;
+using SnakeGameLib.ModelObjects;
 
-namespace SnakeGame.Net2._1
+namespace SnakeGameLib
 {
     public class SnakeGameAsyncService
     {
@@ -55,6 +55,11 @@ namespace SnakeGame.Net2._1
         public void GoDown()
         { 
             _snakeGame.GoDown();
+        }
+
+        public Snake GetSnake()
+        {
+            return _snakeGame.GetSnake();
         }
     }
 }

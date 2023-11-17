@@ -2,7 +2,9 @@
 {
     public enum SquareStatus
     {
-        Unfilled = 0,
-        Filled = 1
+        Head = 0,
+        Body = 1,
+        Food = 2,
+        Empty = 3
     }
 }

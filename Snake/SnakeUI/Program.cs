@@ -74,13 +74,6 @@ namespace SnakeUI
                 _snakeGameAsyncService.GoDown();
             }
 
-
-
-
-
-
-
-
         }
         
         public void GamePositionUpdatedhandler(object? sender, GameModel eventArgs)
@@ -90,14 +83,7 @@ namespace SnakeUI
             {
                 for (int y = 0; y < 100; ++y)
                 {
-                    if (eventArgs._position[x, y] == SquareStatus.Filled)
-                    {
-                        bmp.SetPixel(x, y, Color.Black);
-                    }
-                    else
-                    {
-                        bmp.SetPixel(x, y, Color.Red);
-                    }
+                    bmp.SetPixel(x, y, eventArgs._position[x, y] == SquareStatus.Empty ? Color.Red : Color.Black);
                 }
             }
 

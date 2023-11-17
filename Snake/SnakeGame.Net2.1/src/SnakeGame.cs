@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
-using SnakeGame.Net2._1.ModelObjects;
+using SnakeGameLib.ModelObjects;
 
-namespace SnakeGame.Net2._1
+namespace SnakeGameLib
 {
     public class SnakeGame
     {
@@ -15,27 +15,28 @@ namespace SnakeGame.Net2._1
         private volatile string _direction = "Right";
         private Random _random = new Random();
 
+        private Snake snake_ = new Snake();
+
         public void RunGame()
         {
             List<Point> food = new List<Point>();
             GamePosition position = new GamePosition();
-            List<Point> snake = new List<Point>();
             Point snakePoint1 = GenerateRandomPointNoDuplicates(new List<Point>());
             Point snakePoint2 = position.GetLeftPoint(snakePoint1);
             Point snakePoint3 = position.GetLeftPoint(snakePoint2);
 
-            snake.Add(snakePoint3);
-            snake.Add(snakePoint2);
-            snake.Add(snakePoint1);
+            snake_.Add(snakePoint3);
+            snake_.Add(snakePoint2);
+            snake_.Add(snakePoint1);
 
-            Point foodPoint = GenerateFoodPoint(snake);
+            Point foodPoint = GenerateFoodPoint(snake_.GetSnakePoints());
             food.Add(foodPoint);
 
-            position.Fill(foodPoint);
+            position.Food(foodPoint);
 
-            position.Fill(snakePoint1);
-            position.Fill(snakePoint2);
-            position.Fill(snakePoint3);
+            position.Head(snakePoint1);
+            position.Body(snakePoint2);
+            position.Body(snakePoint3);
 
             while (true)
             {
@@ -44,54 +45,55 @@ namespace SnakeGame.Net2._1
                     GamePositionUpdated?.Invoke(this, position.GetGameModel());
                     Thread.Sleep(100);
 
-                    Point lastPoint = snake.First();
+                    Point lastPoint = snake_.Last();
                     if (food.Contains(lastPoint))
                     {
                         food.Remove(lastPoint);
+                        position.Body(lastPoint);
                     }
                     else
                     {
-                        snake.RemoveAt(0);
-                        position.Unfill(lastPoint);
+                        snake_.RemoveLast();
+                        position.Empty(lastPoint);
                     }
 
-                    Point firstPoint = snake.Last();
+                    Point firstPoint = snake_.Head();
 
-                    Point point_to_fill = default;
+                    Point pointToFill = default;
                     
                     if (_direction == "Left")
                     {
-                        point_to_fill = position.GetLeftPoint(firstPoint);
+                        pointToFill = position.GetLeftPoint(firstPoint);
                     }
 
                     if (_direction == "Right")
                     {
-                        point_to_fill = position.GetRightPoint(firstPoint);
+                        pointToFill = position.GetRightPoint(firstPoint);
                     }
 
                     if (_direction == "Down")
                     {
-                        point_to_fill = position.GetDownPoint(firstPoint);
+                        pointToFill = position.GetDownPoint(firstPoint);
                     }
 
                     if (_direction == "Up")
                     {
-                        point_to_fill = position.GetUpPoint(firstPoint);
+                        pointToFill = position.GetUpPoint(firstPoint);
                     }
-                    if (snake.Contains(point_to_fill))
+                    if (snake_.Contains(pointToFill))
                     {
                         FailureDetected?.Invoke(this, EventArgs.Empty);
                     }
-                    if (food.Contains(point_to_fill))
+                    if (food.Contains(pointToFill))
                     {
-                        Point newFood = GenerateFoodPoint(snake);
+                        Point newFood = GenerateFoodPoint(snake_.GetSnakePoints());
                         food.Add(newFood);
-                        position.Fill(newFood);
+                        position.Food(newFood);
                     }
                    
-
-                    position.Fill(point_to_fill);
-                    snake.Add(point_to_fill);
+                    position.Body(firstPoint);
+                    position.Head(pointToFill);
+                    snake_.Add(pointToFill);
 
                 }
             }
@@ -148,6 +150,11 @@ namespace SnakeGame.Net2._1
         public void GoDown()
         {
             _direction = "Down";
+        }
+
+        public Snake GetSnake()
+        {
+            return snake_.GetCopy();
         }
     }
 }
