@@ -58,6 +58,14 @@ public class Snake
         }
     }
 
+    public IEnumerable<Point> Body()
+    {
+        lock (SnakeLock_)
+        {
+            return snakePoints_.SkipLast(1);
+        }
+    }
+
     public void RemoveLast()
     {
         lock (SnakeLock_)

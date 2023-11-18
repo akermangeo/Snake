@@ -10,6 +10,7 @@ namespace SnakeGameLib
     public class SnakeGame
     {
         public event EventHandler<GameModel>? GamePositionUpdated;
+        public event EventHandler<Point>? NewFoodPoint;
         public event EventHandler? FailureDetected;
         private volatile bool _paused = false;
         private volatile string _direction = "Right";
@@ -32,7 +33,7 @@ namespace SnakeGameLib
             Point foodPoint = GenerateFoodPoint(snake_.GetSnakePoints());
             food.Add(foodPoint);
 
-            position.Food(foodPoint);
+            AddFoodPoint(position, foodPoint);
 
             position.Head(snakePoint1);
             position.Body(snakePoint2);
@@ -88,7 +89,7 @@ namespace SnakeGameLib
                     {
                         Point newFood = GenerateFoodPoint(snake_.GetSnakePoints());
                         food.Add(newFood);
-                        position.Food(newFood);
+                        AddFoodPoint(position, newFood);
                     }
                    
                     position.Body(firstPoint);
@@ -97,6 +98,12 @@ namespace SnakeGameLib
 
                 }
             }
+        }
+
+        private void AddFoodPoint(GamePosition position, Point foodPoint)
+        {
+            position.Food(foodPoint);
+            NewFoodPoint?.Invoke(this, foodPoint);
         }
 
         private Point GenerateFoodPoint(List<Point> snake)
