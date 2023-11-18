@@ -52,24 +52,9 @@ namespace SnakeGameLib
             _snakeGame.TogglePause();
         }
 
-        public void GoLeft()
+        public void ChangeDirection(Direction direction)
         {
-            _snakeGame.GoLeft();
-        }
-
-        public void GoRight()
-        {
-            _snakeGame.GoRight();
-        }
-
-        public void GoUp()
-        {
-            _snakeGame.GoUp();
-        }
-
-        public void GoDown()
-        { 
-            _snakeGame.GoDown();
+            _snakeGame.ChangeDirection(direction);
         }
 
         public Snake GetSnake()

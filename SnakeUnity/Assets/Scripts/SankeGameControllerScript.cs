@@ -32,6 +32,23 @@ public class SankeGameControllerScript : MonoBehaviour
         {
             CreateFood(SnakeGameWrapper.GetHead());
         }
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            SnakeGameWrapper.ChangeDirection(Direction.Left);
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            SnakeGameWrapper.ChangeDirection(Direction.Down);
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            SnakeGameWrapper.ChangeDirection(Direction.Up);
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            SnakeGameWrapper.ChangeDirection(Direction.Right);
+        }
     }
 
     void CreateHead(Point point)

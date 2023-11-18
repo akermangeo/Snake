@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using SnakeGameLib.ModelObjects;
 
 namespace SnakeGameLib;
@@ -23,6 +24,18 @@ public class GamePosition
     }
 
     private readonly SquareStatus[,] _position;
+
+    public Point GetPoint(Point currentPoint, Direction direction)
+    {
+        return direction switch
+        {
+            Direction.Left => GetLeftPoint(currentPoint),
+            Direction.Right => GetRightPoint(currentPoint),
+            Direction.Up => GetUpPoint(currentPoint),
+            Direction.Down => GetDownPoint(currentPoint),
+            _ => throw new ArgumentException("That direction is not supported.")
+        };
+    }
 
     public Point GetLeftPoint(Point currentPoint)
     {

@@ -14,7 +14,7 @@ namespace SnakeGameLib
         public event EventHandler<Point>? NewHeadPoint;
         public event EventHandler? FailureDetected;
         private volatile bool _paused = false;
-        private volatile string _direction = "Right";
+        private volatile Direction _direction = Direction.Right;
         private Random _random = new Random();
 
         private Snake snake_ = new Snake();
@@ -63,25 +63,8 @@ namespace SnakeGameLib
 
                     Point pointToFill = default;
                     
-                    if (_direction == "Left")
-                    {
-                        pointToFill = position.GetLeftPoint(firstPoint);
-                    }
+                    pointToFill = position.GetPoint(firstPoint, _direction);
 
-                    if (_direction == "Right")
-                    {
-                        pointToFill = position.GetRightPoint(firstPoint);
-                    }
-
-                    if (_direction == "Down")
-                    {
-                        pointToFill = position.GetDownPoint(firstPoint);
-                    }
-
-                    if (_direction == "Up")
-                    {
-                        pointToFill = position.GetUpPoint(firstPoint);
-                    }
                     if (snake_.Contains(pointToFill))
                     {
                         FailureDetected?.Invoke(this, EventArgs.Empty);
@@ -146,29 +129,14 @@ namespace SnakeGameLib
             _paused = !_paused;
         }
 
-        public void GoLeft()
-        {
-            _direction = "Left";
-        }
-
-        public void GoRight()
-        {
-            _direction = "Right";
-        }
-
-        public void GoUp()
-        {
-            _direction = "Up";
-        }
-
-        public void GoDown()
-        {
-            _direction = "Down";
-        }
-
         public Snake GetSnake()
         {
             return snake_.GetCopy();
+        }
+
+        public void ChangeDirection(Direction direction)
+        {
+            _direction = direction;
         }
     }
 }

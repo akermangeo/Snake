@@ -56,22 +56,22 @@ namespace SnakeUI
 
             if (e.KeyCode == Keys.Left)
             {
-                _snakeGameAsyncService.GoLeft();
+                _snakeGameAsyncService.ChangeDirection(Direction.Left);
             }
 
             if (e.KeyCode == Keys.Right)
             {
-                _snakeGameAsyncService.GoRight();
+                _snakeGameAsyncService.ChangeDirection(Direction.Right);
             }
 
             if (e.KeyCode == Keys.Up)
             {
-                _snakeGameAsyncService.GoUp();
+                _snakeGameAsyncService.ChangeDirection(Direction.Up);
             }
 
             if (e.KeyCode == Keys.Down)
             {
-                _snakeGameAsyncService.GoDown();
+                _snakeGameAsyncService.ChangeDirection(Direction.Down);
             }
 
         }

@@ -98,4 +98,9 @@ public class SnakeGameWrapper
         _newHeadPoints.TryDequeue(out Point point);
         return point;
     }
+
+    public void ChangeDirection(Direction direction)
+    {
+        _snakeGameAsyncService.ChangeDirection(direction);
+    }
 }
