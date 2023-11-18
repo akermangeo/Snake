@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Drawing;
 using SnakeGameLib;
 using SnakeGameLib.ModelObjects;
@@ -8,10 +9,12 @@ public class SnakeGameWrapper
 {
     private SnakeGameAsyncService _snakeGameAsyncService;
 
-    private static readonly object GameModelLock = new object();
+    private ConcurrentQueue<Point> _newHeadPoints = new();
+
+    private static readonly object GameModelLock = new();
     private GameModel _gameModel;
 
-    private static readonly object FoodPointLock = new object();
+    private static readonly object FoodPointLock = new();
     private Point _foodPoint;
     private volatile bool _newFoodPoint = false;
 
@@ -21,6 +24,12 @@ public class SnakeGameWrapper
         snakeGameAsyncService.RunGameAsync();
         snakeGameAsyncService.GamePositionUpdated += SnakeGameAsyncServiceOnGamePositionUpdated;
         snakeGameAsyncService.NewFoodPoint += SnakeGameAsyncServiceOnNewFoodPoint;
+        snakeGameAsyncService.NewHeadPoint += SnakeGameAsyncServiceOnNewHeadPoint;
+    }
+
+    private void SnakeGameAsyncServiceOnNewHeadPoint(object sender, Point e)
+    {
+        _newHeadPoints.Enqueue(e);
     }
 
     private void SnakeGameAsyncServiceOnNewFoodPoint(object sender, Point e)
@@ -77,5 +86,16 @@ public class SnakeGameWrapper
             _newFoodPoint = false;
             return _foodPoint;
         }
+    }
+
+    public bool HasNewHead()
+    {
+        return !_newHeadPoints.IsEmpty;
+    }
+
+    public Point GetHead()
+    {
+        _newHeadPoints.TryDequeue(out Point point);
+        return point;
     }
 }

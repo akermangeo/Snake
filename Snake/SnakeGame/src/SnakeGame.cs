@@ -11,6 +11,7 @@ namespace SnakeGameLib
     {
         public event EventHandler<GameModel>? GamePositionUpdated;
         public event EventHandler<Point>? NewFoodPoint;
+        public event EventHandler<Point>? NewHeadPoint;
         public event EventHandler? FailureDetected;
         private volatile bool _paused = false;
         private volatile string _direction = "Right";
@@ -93,11 +94,17 @@ namespace SnakeGameLib
                     }
                    
                     position.Body(firstPoint);
-                    position.Head(pointToFill);
+                    NewHead(position, pointToFill);
                     snake_.Add(pointToFill);
 
                 }
             }
+        }
+
+        private void NewHead(GamePosition position, Point point)
+        {
+            position.Head(point);
+            NewHeadPoint?.Invoke(this, point);
         }
 
         private void AddFoodPoint(GamePosition position, Point foodPoint)

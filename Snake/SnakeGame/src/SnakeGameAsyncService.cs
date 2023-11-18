@@ -9,6 +9,7 @@ namespace SnakeGameLib
     {
         public event EventHandler<GameModel> GamePositionUpdated;
         public event EventHandler<Point> NewFoodPoint;
+        public event EventHandler<Point> NewHeadPoint;
         public event EventHandler FailureDetected;
         private SnakeGame _snakeGame;
 
@@ -18,6 +19,12 @@ namespace SnakeGameLib
             snakeGame.GamePositionUpdated += GamePositionUpdatedhandler;
             snakeGame.FailureDetected += FailureDetectedHandler;
             snakeGame.NewFoodPoint += SnakeGameOnNewFoodPoint;
+            snakeGame.NewHeadPoint += SnakeGameOnNewHeadPoint;
+        }
+
+        private void SnakeGameOnNewHeadPoint(object sender, Point e)
+        {
+            NewHeadPoint?.Invoke(this, e);
         }
 
         private void SnakeGameOnNewFoodPoint(object sender, Point e)

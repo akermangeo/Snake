@@ -27,6 +27,11 @@ public class SankeGameControllerScript : MonoBehaviour
         {
             CreateFood(SnakeGameWrapper.GetFoodPoint());
         }
+
+        if (SnakeGameWrapper.HasNewHead())
+        {
+            CreateFood(SnakeGameWrapper.GetHead());
+        }
     }
 
     void CreateHead(Point point)
